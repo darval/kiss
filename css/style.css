@@ -1,0 +1,319 @@
+/* Keep It Simple, Sherry - Website Styles */
+/* Mobile-first, responsive design */
+
+:root {
+    /* Parent brand colors */
+    --color-primary: #1B5E20;
+    --color-background: #E8E6E0;
+    --color-text: #2C2C2C;
+    --color-accent: #FFA726;
+    --color-link: #1976D2;
+
+    /* App primary color */
+    --color-shopping: #2E7D32;
+
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Reset and Base */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 18px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: var(--color-link);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Container */
+.container {
+    max-width: 800px;
+    margin-inline: auto;
+    padding-inline: var(--space-md);
+}
+
+/* Header */
+.header {
+    padding-block: var(--space-xl);
+    text-align: center;
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.brand-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-block-end: var(--space-xs);
+}
+
+.brand-tagline {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Hero Section */
+.hero {
+    padding-block: var(--space-2xl);
+    text-align: center;
+    background-color: white;
+}
+
+.app-icon {
+    width: 120px;
+    height: 120px;
+    margin-inline: auto;
+    margin-block-end: var(--space-lg);
+    border-radius: 22px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.app-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-shopping);
+    margin-block-end: var(--space-sm);
+}
+
+.app-tagline {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-block-end: var(--space-md);
+}
+
+.app-description {
+    font-size: 1rem;
+    color: var(--color-text);
+    opacity: 0.85;
+    margin-block-end: var(--space-lg);
+}
+
+.app-store-link {
+    display: inline-block;
+}
+
+.app-store-badge {
+    height: 48px;
+    width: auto;
+    transition: transform 0.2s ease;
+}
+
+.app-store-link:hover .app-store-badge {
+    transform: scale(1.05);
+}
+
+/* Screenshots Section */
+.screenshots {
+    padding-block: var(--space-2xl);
+    background-color: var(--color-background);
+}
+
+.screenshot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    max-width: 500px;
+    margin-inline: auto;
+}
+
+.screenshot-item img {
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Features Section */
+.features {
+    padding-block: var(--space-2xl);
+    background-color: white;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+}
+
+.feature-item {
+    text-align: center;
+}
+
+.feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    margin-block-end: var(--space-md);
+    background-color: var(--color-shopping);
+    color: white;
+    border-radius: 16px;
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-block-end: var(--space-sm);
+}
+
+.feature-description {
+    font-size: 1rem;
+    color: var(--color-text);
+    opacity: 0.85;
+    max-width: 300px;
+    margin-inline: auto;
+}
+
+/* Footer */
+.footer {
+    padding-block: var(--space-xl);
+    text-align: center;
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.footer-nav {
+    margin-block-end: var(--space-md);
+}
+
+.footer-nav a {
+    color: white;
+    opacity: 0.9;
+}
+
+.footer-nav a:hover {
+    opacity: 1;
+}
+
+.footer-nav .separator {
+    margin-inline: var(--space-sm);
+    opacity: 0.5;
+}
+
+.copyright {
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+/* Tablet and up */
+@media (min-width: 640px) {
+    .brand-name {
+        font-size: 2rem;
+    }
+
+    .app-icon {
+        width: 150px;
+        height: 150px;
+    }
+
+    .app-name {
+        font-size: 2.5rem;
+    }
+
+    .app-tagline {
+        font-size: 1.5rem;
+    }
+
+    .screenshot-grid {
+        max-width: 600px;
+        gap: var(--space-lg);
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-lg);
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .hero {
+        padding-block: var(--space-2xl) calc(var(--space-2xl) * 1.5);
+    }
+
+    .app-icon {
+        width: 180px;
+        height: 180px;
+    }
+
+    .screenshot-grid {
+        max-width: 700px;
+    }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .app-store-link:hover .app-store-badge {
+        transform: none;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-background: #121212;
+        --color-text: #E0E0E0;
+    }
+
+    .hero {
+        background-color: #1E1E1E;
+    }
+
+    .features {
+        background-color: #1E1E1E;
+    }
+
+    .app-name {
+        color: #4CAF50;
+    }
+
+    .feature-title {
+        color: #81C784;
+    }
+
+    .feature-icon {
+        background-color: #4CAF50;
+    }
+
+    .screenshot-item img {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+}

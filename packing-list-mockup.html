@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sherry's Packing List - Interactive Mockup</title>
+    <style>
+        :root {
+            /* Ocean Blue palette (vs Shopping List's Forest Green) */
+            --primary-blue: #1976D2;
+            --primary-blue-light: #E3F2FD;
+            --primary-blue-mid: #64B5F6;
+            /* Shared accent */
+            --accent-orange: #F57C00;
+            --accent-orange-bg: #FFF3E0;
+            /* Status colors */
+            --success-green: #4CAF50;
+            --error-red: #F44336;
+            /* Backgrounds */
+            --bg-light: #F5F5F5;
+            --header-gradient-start: #1565C0;
+            --header-gradient-end: #1976D2;
+            /* Text */
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --text-on-primary: white;
+            --border-color: #E0E0E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .mockup-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .mockup-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .mockup-title h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .mockup-title p {
+            color: #888;
+            font-size: 1rem;
+        }
+
+        .demo-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        /* iPhone frame */
+        .iphone-frame {
+            width: 320px;
+            height: 660px;
+            background: #1c1c1e;
+            border-radius: 50px;
+            padding: 14px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .iphone-frame::before {
+            content: '';
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 30px;
+            background: #1c1c1e;
+            border-radius: 20px;
+            z-index: 10;
+        }
+
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-light);
+            border-radius: 38px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header - matches Shopping List style */
+        .app-header {
+            background: linear-gradient(180deg, var(--header-gradient-start) 0%, var(--header-gradient-end) 100%);
+            padding: 50px 15px 12px;
+            color: var(--text-on-primary);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .app-name {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .header-btn {
+            width: 34px;
+            height: 34px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            color: var(--accent-orange);
+            margin-top: 2px;
+        }
+
+        /* Tab bar - segmented control style like Shopping List */
+        .tab-segment-bar {
+            background: var(--primary-blue-light);
+            padding: 8px 12px;
+            display: flex;
+            gap: 2px;
+        }
+
+        .tab-segment {
+            flex: 1;
+            padding: 8px 6px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--primary-blue);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-segment:hover {
+            background: rgba(25, 118, 210, 0.1);
+        }
+
+        .tab-segment.active {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        /* Search bar */
+        .search-bar {
+            padding: 10px 15px;
+            background: var(--bg-light);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            font-size: 12px;
+            color: var(--text-secondary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Content area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--bg-light);
+        }
+
+        /* Screen views */
+        .screen-view {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .screen-view.active {
+            display: flex;
+        }
+
+        /* List items */
+        .list-item {
+            background: white;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .list-item:hover {
+            background: #FAFAFA;
+        }
+
+        .list-item-content {
+            flex: 1;
+        }
+
+        .list-item-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .list-item-subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 1px;
+        }
+
+        .list-item-action {
+            color: var(--primary-blue);
+            font-size: 14px;
+        }
+
+        /* Checkbox */
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #C7C7CC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .checkbox:hover {
+            border-color: var(--success-green);
+        }
+
+        .checkbox.checked {
+            background: var(--success-green);
+            border-color: var(--success-green);
+            color: white;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            font-weight: bold;
+        }
+
+        /* Section header */
+        .section-header {
+            padding: 10px 12px 6px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--bg-light);
+        }
+
+        /* Trip header */
+        .trip-header {
+            background: white;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .trip-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trip-header-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .trip-header-subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .progress-text {
+            font-size: 11px;
+            color: var(--primary-blue);
+            font-weight: 500;
+        }
+
+        .add-btn {
+            width: 30px;
+            height: 30px;
+            background: var(--primary-blue);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .add-btn:hover {
+            background: #1565C0;
+        }
+
+        /* Back navigation */
+        .nav-back {
+            background: linear-gradient(180deg, var(--header-gradient-start) 0%, var(--header-gradient-end) 100%);
+            padding: 50px 15px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            font-size: 13px;
+            color: white;
+            cursor: pointer;
+            padding: 4px 8px 4px 0;
+        }
+
+        .back-link:hover {
+            opacity: 0.8;
+        }
+
+        .back-arrow {
+            font-size: 16px;
+        }
+
+        .nav-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .complete-btn {
+            width: 34px;
+            height: 34px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .complete-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Bullet list for archive detail */
+        .bullet-item {
+            background: white;
+            padding: 10px 12px 10px 24px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-primary);
+            position: relative;
+        }
+
+        .bullet-item::before {
+            content: '•';
+            position: absolute;
+            left: 12px;
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+
+        /* Picker option */
+        .picker-option {
+            background: white;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .picker-option:hover {
+            background: #FAFAFA;
+        }
+
+        .picker-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .picker-icon.blue {
+            background: var(--primary-blue-light);
+        }
+
+        .picker-icon.orange {
+            background: var(--accent-orange-bg);
+        }
+
+        .picker-chevron {
+            color: #C7C7CC;
+            font-size: 14px;
+        }
+
+        /* Create new item row */
+        .create-new-row {
+            background: white;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-blue);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .create-new-row:hover {
+            background: #FAFAFA;
+        }
+
+        /* Added indicator */
+        .added-indicator {
+            font-size: 10px;
+            color: var(--text-secondary);
+            font-weight: normal;
+        }
+
+        /* Instructions panel */
+        .instructions {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 300px;
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .instructions h3 {
+            color: white;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .instructions ul {
+            margin-left: 18px;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+        }
+
+        .instructions code {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        .swatch-blue { background: var(--primary-blue); }
+        .swatch-green { background: #388E3C; }
+        .swatch-orange { background: var(--accent-orange); }
+
+        /* Current screen indicator */
+        .screen-indicator {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 700px) {
+            .demo-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .instructions {
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mockup-container">
+        <div class="mockup-title">
+            <h1>Sherry's Packing List</h1>
+            <p>Interactive UI Mockup - Click tabs and items to navigate</p>
+        </div>
+
+        <div class="demo-container">
+            <div>
+                <div class="iphone-frame">
+                    <div class="iphone-screen">
+                        <!-- ARCHIVE TAB -->
+                        <div id="screen-archive" class="screen-view active">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Packing List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn" onclick="showScreen('new-trip')">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">2 archived trips</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment active" onclick="showTab('archive')">Archive</button>
+                                <button class="tab-segment" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment" onclick="showTab('trips')">Trips</button>
+                            </div>
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Search..." readonly>
+                            </div>
+                            <div class="content">
+                                <div class="list-item" onclick="showScreen('archive-detail')">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">NYC Business Trip</div>
+                                        <div class="list-item-subtitle">8 items</div>
+                                    </div>
+                                    <span class="list-item-action">›</span>
+                                </div>
+                                <div class="list-item" onclick="showScreen('archive-detail-beach')">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Beach Vacation 2024</div>
+                                        <div class="list-item-subtitle">10 items</div>
+                                    </div>
+                                    <span class="list-item-action">›</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ITEMS TAB -->
+                        <div id="screen-items" class="screen-view">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Packing List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">15 items in library</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment" onclick="showTab('archive')">Archive</button>
+                                <button class="tab-segment active" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment" onclick="showTab('trips')">Trips</button>
+                            </div>
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Search..." readonly>
+                            </div>
+                            <div class="content">
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Phone charger</div>
+                                        <div class="list-item-subtitle">USB-C fast charging</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Sunscreen</div>
+                                        <div class="list-item-subtitle">SPF 50</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Laptop</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Swimsuit</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Sunglasses</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Kindle</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Jacket</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TRIPS TAB -->
+                        <div id="screen-trips" class="screen-view">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Packing List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn" onclick="showScreen('new-trip')">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">2 active trips</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment" onclick="showTab('archive')">Archive</button>
+                                <button class="tab-segment" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment active" onclick="showTab('trips')">Trips</button>
+                            </div>
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Search..." readonly>
+                            </div>
+                            <div class="content">
+                                <div class="list-item" onclick="showScreen('trip-edit')">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Weekend Getaway</div>
+                                        <div class="list-item-subtitle">2 of 6 packed</div>
+                                    </div>
+                                    <span class="list-item-action">›</span>
+                                </div>
+                                <div class="list-item" onclick="showScreen('trip-edit')">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Chicago Conference</div>
+                                        <div class="list-item-subtitle">0 of 12 packed</div>
+                                    </div>
+                                    <span class="list-item-action">›</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TRIP EDIT -->
+                        <div id="screen-trip-edit" class="screen-view">
+                            <div class="nav-back">
+                                <div class="back-link" onclick="showTab('trips')">
+                                    <span class="back-arrow">‹</span>
+                                    <span>Trips</span>
+                                </div>
+                                <span class="nav-title"></span>
+                                <button class="complete-btn" title="Complete & Archive">✓</button>
+                            </div>
+                            <div class="trip-header">
+                                <div class="trip-header-row">
+                                    <div>
+                                        <div class="trip-header-title">Weekend Getaway</div>
+                                        <div class="trip-header-subtitle">Quick trip to the cabin</div>
+                                    </div>
+                                </div>
+                                <div class="trip-header-row" style="margin-top: 10px;">
+                                    <span class="progress-text" id="progress-text">2 of 6 packed</span>
+                                    <button class="add-btn" onclick="showScreen('add-item')">+</button>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <div class="list-item" onclick="toggleCheck(this)">
+                                    <div class="checkbox checked"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Sunglasses</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item" onclick="toggleCheck(this)">
+                                    <div class="checkbox checked"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Phone charger</div>
+                                        <div class="list-item-subtitle">USB-C fast charging</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item" onclick="toggleCheck(this)">
+                                    <div class="checkbox"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Jacket</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item" onclick="toggleCheck(this)">
+                                    <div class="checkbox"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Toiletry bag</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item" onclick="toggleCheck(this)">
+                                    <div class="checkbox"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Kindle</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item" onclick="toggleCheck(this)">
+                                    <div class="checkbox"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Snacks</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ADD ITEM TO TRIP -->
+                        <div id="screen-add-item" class="screen-view">
+                            <div class="nav-back">
+                                <div class="back-link" onclick="showScreen('trip-edit')">
+                                    <span class="back-arrow">‹</span>
+                                    <span>Cancel</span>
+                                </div>
+                                <span class="nav-title">Add Item</span>
+                                <div class="back-link" onclick="showScreen('trip-edit')">Done</div>
+                            </div>
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Search items..." readonly>
+                            </div>
+                            <div class="content">
+                                <div class="list-item">
+                                    <div class="checkbox"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Laptop</div>
+                                    </div>
+                                </div>
+                                <div class="list-item">
+                                    <div class="checkbox"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Swimsuit</div>
+                                    </div>
+                                </div>
+                                <div class="list-item">
+                                    <div class="checkbox checked"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Sunglasses <span class="added-indicator">(in trip)</span></div>
+                                    </div>
+                                </div>
+                                <div class="list-item">
+                                    <div class="checkbox checked"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Phone charger <span class="added-indicator">(in trip)</span></div>
+                                        <div class="list-item-subtitle">USB-C fast charging</div>
+                                    </div>
+                                </div>
+                                <div class="list-item">
+                                    <div class="checkbox"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Sunscreen</div>
+                                        <div class="list-item-subtitle">SPF 50</div>
+                                    </div>
+                                </div>
+                                <div class="list-item">
+                                    <div class="checkbox"></div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Beach towel</div>
+                                    </div>
+                                </div>
+                                <div class="create-new-row">
+                                    <span style="font-size: 18px;">+</span>
+                                    <span>Create New Item</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ARCHIVE DETAIL (NYC) -->
+                        <div id="screen-archive-detail" class="screen-view">
+                            <div class="nav-back">
+                                <div class="back-link" onclick="showTab('archive')">
+                                    <span class="back-arrow">‹</span>
+                                    <span>Archive</span>
+                                </div>
+                                <span class="nav-title"></span>
+                                <span style="width: 34px;"></span>
+                            </div>
+                            <div class="trip-header">
+                                <div class="trip-header-title">NYC Business Trip</div>
+                                <div class="trip-header-subtitle">8 items</div>
+                            </div>
+                            <div class="content">
+                                <div class="bullet-item">Laptop</div>
+                                <div class="bullet-item">Phone charger</div>
+                                <div class="bullet-item">Dress shirt</div>
+                                <div class="bullet-item">Dress pants</div>
+                                <div class="bullet-item">Belt</div>
+                                <div class="bullet-item">Toiletry bag</div>
+                                <div class="bullet-item">Business cards</div>
+                                <div class="bullet-item">Notebook</div>
+                            </div>
+                        </div>
+
+                        <!-- ARCHIVE DETAIL (Beach) -->
+                        <div id="screen-archive-detail-beach" class="screen-view">
+                            <div class="nav-back">
+                                <div class="back-link" onclick="showTab('archive')">
+                                    <span class="back-arrow">‹</span>
+                                    <span>Archive</span>
+                                </div>
+                                <span class="nav-title"></span>
+                                <span style="width: 34px;"></span>
+                            </div>
+                            <div class="trip-header">
+                                <div class="trip-header-title">Beach Vacation 2024</div>
+                                <div class="trip-header-subtitle">10 items</div>
+                            </div>
+                            <div class="content">
+                                <div class="bullet-item">Sunscreen</div>
+                                <div class="bullet-item">Swimsuit</div>
+                                <div class="bullet-item">Sandals</div>
+                                <div class="bullet-item">Beach towel</div>
+                                <div class="bullet-item">Sunglasses</div>
+                                <div class="bullet-item">Kindle</div>
+                                <div class="bullet-item">Phone charger</div>
+                                <div class="bullet-item">Flip flops</div>
+                                <div class="bullet-item">Hat</div>
+                                <div class="bullet-item">Shorts (3)</div>
+                            </div>
+                        </div>
+
+                        <!-- NEW TRIP PICKER -->
+                        <div id="screen-new-trip" class="screen-view">
+                            <div class="nav-back">
+                                <div class="back-link" onclick="showTab('trips')">
+                                    <span class="back-arrow">‹</span>
+                                    <span>Cancel</span>
+                                </div>
+                                <span class="nav-title">New Trip</span>
+                                <span style="width: 50px;"></span>
+                            </div>
+                            <div class="content">
+                                <div class="section-header">Start From</div>
+                                <div class="picker-option" onclick="showScreen('trip-edit')">
+                                    <div class="picker-icon blue">📝</div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Empty Trip</div>
+                                        <div class="list-item-subtitle">Start from scratch</div>
+                                    </div>
+                                    <span class="picker-chevron">›</span>
+                                </div>
+                                <div class="section-header">Or Clone From Archive</div>
+                                <div class="picker-option" onclick="showScreen('trip-edit')">
+                                    <div class="picker-icon orange">💼</div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">NYC Business Trip</div>
+                                        <div class="list-item-subtitle">8 items</div>
+                                    </div>
+                                    <span class="picker-chevron">›</span>
+                                </div>
+                                <div class="picker-option" onclick="showScreen('trip-edit')">
+                                    <div class="picker-icon orange">🏖️</div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Beach Vacation 2024</div>
+                                        <div class="list-item-subtitle">10 items</div>
+                                    </div>
+                                    <span class="picker-chevron">›</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-indicator" id="screen-indicator">Archive Tab</div>
+            </div>
+
+            <div class="instructions">
+                <h3>Interactive Demo</h3>
+                <ul>
+                    <li>Click <strong>tabs</strong> (Archive/Items/Trips) to switch views</li>
+                    <li>Click <strong>trips</strong> to see details</li>
+                    <li>Click <strong>checkboxes</strong> in Trip Edit to toggle packed status</li>
+                    <li>Click <strong>(+)</strong> to create new trip or add items</li>
+                </ul>
+
+                <h3 style="margin-top: 20px;">Design Notes</h3>
+                <ul>
+                    <li><span class="color-swatch swatch-blue"></span>Ocean Blue (vs Shopping List's green)</li>
+                    <li><span class="color-swatch swatch-orange"></span>Orange accent (shared)</li>
+                    <li><span class="color-swatch swatch-green"></span>Green checkmarks (shared)</li>
+                    <li>3 tabs vs Shopping List's 4</li>
+                    <li>Archived trips = templates</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const screenNames = {
+            'screen-archive': 'Archive Tab',
+            'screen-items': 'Items Tab',
+            'screen-trips': 'Trips Tab',
+            'screen-trip-edit': 'Trip Edit',
+            'screen-add-item': 'Add Item to Trip',
+            'screen-archive-detail': 'Archive Detail',
+            'screen-archive-detail-beach': 'Archive Detail',
+            'screen-new-trip': 'New Trip'
+        };
+
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen-view').forEach(s => s.classList.remove('active'));
+            // Show target screen
+            const screen = document.getElementById('screen-' + screenId);
+            if (screen) {
+                screen.classList.add('active');
+                document.getElementById('screen-indicator').textContent = screenNames['screen-' + screenId] || screenId;
+            }
+        }
+
+        function showTab(tab) {
+            showScreen(tab);
+        }
+
+        function toggleCheck(listItem) {
+            const checkbox = listItem.querySelector('.checkbox');
+            if (checkbox) {
+                checkbox.classList.toggle('checked');
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('#screen-trip-edit .checkbox');
+            const total = checkboxes.length;
+            const checked = document.querySelectorAll('#screen-trip-edit .checkbox.checked').length;
+            document.getElementById('progress-text').textContent = checked + ' of ' + total + ' packed';
+        }
+    </script>
+</body>
+</html>

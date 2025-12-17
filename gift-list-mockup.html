@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sherry's Gift List - Interactive Mockup</title>
+    <style>
+        :root {
+            /* Royal Purple palette for Gift List (from KISSColors.swift) */
+            --primary-purple: #7B1FA2;
+            --primary-purple-light: #E1BEE7;
+            --primary-purple-mid: #BA68C8;
+            --primary-purple-dark: #6A1B9A;
+            /* Shared accent - Warm Orange (from KISSColors) */
+            --accent-orange: #FFA726;
+            --accent-orange-bg: #FFF3E0;
+            /* Status colors (from KISSColors) */
+            --success-green: #4CAF50;
+            --info-blue: #1976D2;
+            --purchased-teal: #009688;
+            --error-red: #F44336;
+            /* Backgrounds (from KISSColors) */
+            --bg-light: #F5F5F5;
+            --header-gradient-start: #6A1B9A;
+            --header-gradient-end: #7B1FA2;
+            /* Text */
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --text-on-primary: white;
+            --border-color: #E0E0E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .mockup-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .mockup-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .mockup-title h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .mockup-title p {
+            color: #888;
+            font-size: 1rem;
+        }
+
+        .demo-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        /* iPhone frame */
+        .iphone-frame {
+            width: 320px;
+            height: 660px;
+            background: #1c1c1e;
+            border-radius: 50px;
+            padding: 14px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .iphone-frame::before {
+            content: '';
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 30px;
+            background: #1c1c1e;
+            border-radius: 20px;
+            z-index: 10;
+        }
+
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-light);
+            border-radius: 38px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .app-header {
+            background: linear-gradient(180deg, var(--header-gradient-start) 0%, var(--header-gradient-end) 100%);
+            padding: 50px 15px 12px;
+            color: var(--text-on-primary);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .app-name {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .header-btn {
+            width: 34px;
+            height: 34px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .header-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            color: var(--accent-orange);
+            margin-top: 2px;
+        }
+
+        /* Tab bar */
+        .tab-segment-bar {
+            background: var(--primary-purple-light);
+            padding: 8px 12px;
+            display: flex;
+            gap: 2px;
+        }
+
+        .tab-segment {
+            flex: 1;
+            padding: 8px 6px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--primary-purple);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-segment:hover {
+            background: rgba(123, 31, 162, 0.1);
+        }
+
+        .tab-segment.active {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        /* Search bar */
+        .search-bar {
+            padding: 10px 15px;
+            background: var(--bg-light);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            font-size: 12px;
+            color: var(--text-secondary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Content area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--bg-light);
+        }
+
+        /* Screen views */
+        .screen-view {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .screen-view.active {
+            display: flex;
+        }
+
+        /* List items */
+        .list-item {
+            background: white;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .list-item:hover {
+            background: #FAFAFA;
+        }
+
+        .list-item-content {
+            flex: 1;
+        }
+
+        .list-item-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .list-item-subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 1px;
+        }
+
+        .list-item-action {
+            color: var(--primary-purple);
+            font-size: 14px;
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-available {
+            background: #E8F5E9;
+            color: var(--success-green);
+        }
+
+        .status-claimed {
+            background: #E3F2FD;
+            color: var(--info-blue);
+        }
+
+        .status-purchased {
+            background: #E0F2F1;
+            color: var(--purchased-teal);
+        }
+
+        /* Claim button */
+        .claim-btn {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .claim-btn.claim {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .claim-btn.claim:hover {
+            background: #43A047;
+        }
+
+        .claim-btn.unclaim {
+            background: #E0E0E0;
+            color: var(--text-secondary);
+        }
+
+        .claim-btn.purchased {
+            background: var(--purchased-teal);
+            color: white;
+        }
+
+        /* Section header */
+        .section-header {
+            padding: 10px 12px 6px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--bg-light);
+        }
+
+        /* List header */
+        .list-header {
+            background: white;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .list-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-header-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .list-header-subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .progress-text {
+            font-size: 11px;
+            color: var(--primary-purple);
+            font-weight: 500;
+        }
+
+        .add-btn {
+            width: 30px;
+            height: 30px;
+            background: var(--primary-purple);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .add-btn:hover {
+            background: var(--primary-purple-dark);
+        }
+
+        /* Share button */
+        .share-btn {
+            padding: 6px 12px;
+            background: var(--primary-purple);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .share-btn:hover {
+            background: var(--primary-purple-dark);
+        }
+
+        /* Back navigation */
+        .nav-back {
+            background: linear-gradient(180deg, var(--header-gradient-start) 0%, var(--header-gradient-end) 100%);
+            padding: 50px 15px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            font-size: 13px;
+            color: white;
+            cursor: pointer;
+            padding: 4px 8px 4px 0;
+        }
+
+        .back-link:hover {
+            opacity: 0.8;
+        }
+
+        .back-arrow {
+            font-size: 16px;
+        }
+
+        .nav-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Owner info badge */
+        .owner-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            font-size: 11px;
+        }
+
+        .owner-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        /* Claimer info */
+        .claimer-info {
+            font-size: 10px;
+            color: var(--info-blue);
+            margin-top: 2px;
+        }
+
+        /* Progress bar */
+        .progress-bar-container {
+            margin-top: 8px;
+            background: #E0E0E0;
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .progress-bar.green {
+            background: var(--success-green);
+        }
+
+        .progress-bar.blue {
+            background: var(--info-blue);
+        }
+
+        .progress-bar.teal {
+            background: var(--purchased-teal);
+        }
+
+        /* Shared indicator */
+        .shared-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .shared-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success-green);
+        }
+
+        /* Instructions panel */
+        .instructions {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 320px;
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .instructions h3 {
+            color: white;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .instructions ul {
+            margin-left: 18px;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+        }
+
+        .instructions code {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        .swatch-purple { background: var(--primary-purple); }
+        .swatch-blue { background: var(--info-blue); }
+        .swatch-teal { background: var(--purchased-teal); }
+        .swatch-green { background: var(--success-green); }
+        .swatch-orange { background: var(--accent-orange); }
+
+        /* Current screen indicator */
+        .screen-indicator {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Role indicator */
+        .role-indicator {
+            text-align: center;
+            color: var(--primary-purple);
+            font-size: 11px;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        /* Paywall badge */
+        .paywall-badge {
+            background: var(--accent-orange);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .empty-state-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state-text {
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            .demo-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .instructions {
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mockup-container">
+        <div class="mockup-title">
+            <h1>Sherry's Gift List</h1>
+            <p>Interactive UI Mockup - Multi-User Sharing with Role-Based Views</p>
+        </div>
+
+        <div class="demo-container">
+            <div>
+                <div class="iphone-frame">
+                    <div class="iphone-screen">
+                        <!-- MINE TAB (Owner View) -->
+                        <div id="screen-mine" class="screen-view active">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Gift List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn" onclick="showScreen('new-list')">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">2 wishlists</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment active" onclick="showTab('mine')">Mine</button>
+                                <button class="tab-segment" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment" onclick="showTab('theirs')">Theirs</button>
+                            </div>
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Search lists..." readonly>
+                            </div>
+                            <div class="content">
+                                <div class="list-item" onclick="showScreen('mine-list-detail')">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Birthday 2025</div>
+                                        <div class="list-item-subtitle">8 items &bull; 3 claimed, 2 purchased, 3 available</div>
+                                        <div class="shared-indicator" style="margin-top: 4px;">
+                                            <span class="shared-dot"></span>
+                                            <span>Shared with 3 people</span>
+                                        </div>
+                                    </div>
+                                    <span class="list-item-action">›</span>
+                                </div>
+                                <div class="list-item" onclick="showScreen('mine-list-detail-christmas')">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Christmas Wishes</div>
+                                        <div class="list-item-subtitle">5 items &bull; Not shared yet</div>
+                                    </div>
+                                    <span class="list-item-action">›</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ITEMS TAB (Just items, no context) -->
+                        <div id="screen-items" class="screen-view">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Gift List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">13 items across all lists</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment" onclick="showTab('mine')">Mine</button>
+                                <button class="tab-segment active" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment" onclick="showTab('theirs')">Theirs</button>
+                            </div>
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Search items..." readonly>
+                            </div>
+                            <div class="content">
+                                <div class="section-header">Birthday 2025</div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Kindle Paperwhite</div>
+                                        <div class="list-item-subtitle">Amazon &bull; ~$140</div>
+                                    </div>
+                                    <span class="status-badge status-available">Available</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">AirPods Pro</div>
+                                        <div class="list-item-subtitle">Apple Store &bull; ~$250</div>
+                                    </div>
+                                    <span class="status-badge status-claimed">Claimed</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Cozy Blanket</div>
+                                        <div class="list-item-subtitle">Any store &bull; ~$50</div>
+                                    </div>
+                                    <span class="status-badge status-purchased">Purchased</span>
+                                </div>
+                                <div class="section-header">Christmas Wishes</div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Cookbook Set</div>
+                                        <div class="list-item-subtitle">Barnes & Noble</div>
+                                    </div>
+                                    <span class="status-badge status-available">Available</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Yoga Mat</div>
+                                        <div class="list-item-subtitle">Target &bull; ~$30</div>
+                                    </div>
+                                    <span class="status-badge status-available">Available</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- THEIRS TAB (Claimer View - Lists shared with me) -->
+                        <div id="screen-theirs" class="screen-view">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Gift List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">2 lists shared with you</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment" onclick="showTab('mine')">Mine</button>
+                                <button class="tab-segment" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment active" onclick="showTab('theirs')">Theirs</button>
+                            </div>
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Search lists..." readonly>
+                            </div>
+                            <div class="content">
+                                <div class="list-item" onclick="showScreen('theirs-list-detail')">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Mom's Birthday</div>
+                                        <div class="list-item-subtitle">From Dad &bull; 6 items</div>
+                                        <div class="progress-bar-container">
+                                            <div class="progress-bar teal" style="width: 33%;"></div>
+                                        </div>
+                                    </div>
+                                    <span class="list-item-action">›</span>
+                                </div>
+                                <div class="list-item" onclick="showScreen('theirs-list-detail-sarah')">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Sarah's Wedding Registry</div>
+                                        <div class="list-item-subtitle">From Sarah &bull; 12 items</div>
+                                        <div class="progress-bar-container">
+                                            <div class="progress-bar teal" style="width: 50%;"></div>
+                                        </div>
+                                    </div>
+                                    <span class="list-item-action">›</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MINE LIST DETAIL (Owner sees aggregate only) -->
+                        <!-- Header + Tabs stay visible, tap "Mine" tab to go back -->
+                        <div id="screen-mine-list-detail" class="screen-view">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Gift List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">3 claimed, 2 purchased, 3 available</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment active" onclick="showTab('mine')">Mine</button>
+                                <button class="tab-segment" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment" onclick="showTab('theirs')">Theirs</button>
+                            </div>
+                            <div class="list-header">
+                                <div class="list-header-row">
+                                    <div>
+                                        <div class="list-header-title">Birthday 2025</div>
+                                        <div class="list-header-subtitle">Things I'd love for my birthday!</div>
+                                    </div>
+                                </div>
+                                <div class="shared-indicator" style="margin-top: 8px;">
+                                    <span class="shared-dot"></span>
+                                    <span>Shared with: Mom, Dad, Sister</span>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <!-- Owner sees items but NO claim details -->
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Kindle Paperwhite</div>
+                                        <div class="list-item-subtitle">Amazon &bull; ~$140</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">AirPods Pro</div>
+                                        <div class="list-item-subtitle">Apple Store &bull; ~$250</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Cozy Blanket</div>
+                                        <div class="list-item-subtitle">Any store &bull; ~$50</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Coffee Subscription</div>
+                                        <div class="list-item-subtitle">Blue Bottle &bull; ~$20/month</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Plant Pot Set</div>
+                                        <div class="list-item-subtitle">Pottery Barn &bull; ~$80</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MINE LIST DETAIL - Christmas (Not shared) -->
+                        <div id="screen-mine-list-detail-christmas" class="screen-view">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Gift List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">5 items &bull; Not shared yet</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment active" onclick="showTab('mine')">Mine</button>
+                                <button class="tab-segment" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment" onclick="showTab('theirs')">Theirs</button>
+                            </div>
+                            <div class="list-header">
+                                <div class="list-header-row">
+                                    <div>
+                                        <div class="list-header-title">Christmas Wishes</div>
+                                        <div class="list-header-subtitle">Holiday gift ideas</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Cookbook Set</div>
+                                        <div class="list-item-subtitle">Barnes & Noble</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Yoga Mat</div>
+                                        <div class="list-item-subtitle">Target &bull; ~$30</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Scented Candles</div>
+                                        <div class="list-item-subtitle">Anthropologie</div>
+                                    </div>
+                                    <span class="list-item-action">✏️</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- THEIRS LIST DETAIL (Claimer sees FULL claim info) -->
+                        <div id="screen-theirs-list-detail" class="screen-view">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Gift List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">2 purchased, 1 claimed, 3 available</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment" onclick="showTab('mine')">Mine</button>
+                                <button class="tab-segment" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment active" onclick="showTab('theirs')">Theirs</button>
+                            </div>
+                            <div class="list-header">
+                                <div class="list-header-row">
+                                    <div>
+                                        <div class="list-header-title">Mom's Birthday</div>
+                                        <div class="list-header-subtitle">Help Dad pick the perfect gift!</div>
+                                    </div>
+                                    <div class="owner-badge">
+                                        <span class="owner-avatar">D</span>
+                                        <span>Dad</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <!-- Claimer sees WHO claimed WHAT -->
+                                <div class="section-header">Available to Claim</div>
+                                <div class="list-item" onclick="showScreen('claim-item')">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Spa Gift Card</div>
+                                        <div class="list-item-subtitle">Any spa &bull; ~$100</div>
+                                    </div>
+                                    <button class="claim-btn claim">Claim</button>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Gardening Tools</div>
+                                        <div class="list-item-subtitle">Home Depot &bull; ~$60</div>
+                                    </div>
+                                    <button class="claim-btn claim">Claim</button>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Photo Album</div>
+                                        <div class="list-item-subtitle">Shutterfly &bull; ~$40</div>
+                                    </div>
+                                    <button class="claim-btn claim">Claim</button>
+                                </div>
+
+                                <div class="section-header">Claimed</div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Jewelry Box</div>
+                                        <div class="list-item-subtitle">Nordstrom &bull; ~$80</div>
+                                        <div class="claimer-info">Claimed by You</div>
+                                    </div>
+                                    <button class="claim-btn unclaim">Unclaim</button>
+                                </div>
+
+                                <div class="section-header">Purchased</div>
+                                <div class="list-item" style="opacity: 0.7;">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title" style="text-decoration: line-through;">Cashmere Sweater</div>
+                                        <div class="list-item-subtitle">Any store &bull; ~$120</div>
+                                        <div class="claimer-info">Purchased by Sister</div>
+                                    </div>
+                                    <span class="status-badge status-purchased">Done</span>
+                                </div>
+                                <div class="list-item" style="opacity: 0.7;">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title" style="text-decoration: line-through;">Wine & Cheese Set</div>
+                                        <div class="list-item-subtitle">Williams Sonoma &bull; ~$75</div>
+                                        <div class="claimer-info">Purchased by Brother</div>
+                                    </div>
+                                    <span class="status-badge status-purchased">Done</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- THEIRS LIST DETAIL - Sarah's Wedding -->
+                        <div id="screen-theirs-list-detail-sarah" class="screen-view">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Gift List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">6 purchased, 2 claimed, 4 available</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment" onclick="showTab('mine')">Mine</button>
+                                <button class="tab-segment" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment active" onclick="showTab('theirs')">Theirs</button>
+                            </div>
+                            <div class="list-header">
+                                <div class="list-header-row">
+                                    <div>
+                                        <div class="list-header-title">Sarah's Wedding Registry</div>
+                                        <div class="list-header-subtitle">June 15, 2025</div>
+                                    </div>
+                                    <div class="owner-badge">
+                                        <span class="owner-avatar">S</span>
+                                        <span>Sarah</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <div class="section-header">Available to Claim</div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Stand Mixer</div>
+                                        <div class="list-item-subtitle">KitchenAid &bull; ~$350</div>
+                                    </div>
+                                    <button class="claim-btn claim">Claim</button>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Dinnerware Set</div>
+                                        <div class="list-item-subtitle">Crate & Barrel &bull; ~$200</div>
+                                    </div>
+                                    <button class="claim-btn claim">Claim</button>
+                                </div>
+
+                                <div class="section-header">Claimed</div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Towel Set</div>
+                                        <div class="list-item-subtitle">Pottery Barn &bull; ~$150</div>
+                                        <div class="claimer-info">Claimed by Mike</div>
+                                    </div>
+                                </div>
+                                <div class="list-item">
+                                    <div class="list-item-content">
+                                        <div class="list-item-title">Coffee Maker</div>
+                                        <div class="list-item-subtitle">Breville &bull; ~$280</div>
+                                        <div class="claimer-info">Claimed by Lisa</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CLAIM CONFIRMATION (modal overlay style) -->
+                        <div id="screen-claim-item" class="screen-view">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Gift List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">2 purchased, 1 claimed, 3 available</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment" onclick="showTab('mine')">Mine</button>
+                                <button class="tab-segment" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment active" onclick="showTab('theirs')">Theirs</button>
+                            </div>
+                            <div class="content" style="padding: 20px;">
+                                <div style="background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                    <div style="font-size: 48px; margin-bottom: 16px;">🎁</div>
+                                    <h3 style="margin-bottom: 8px; color: var(--text-primary);">Claim "Spa Gift Card"?</h3>
+                                    <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 20px;">
+                                        This reserves the item for you. Others will see it's claimed but not who claimed it (to keep the surprise!).
+                                    </p>
+                                    <button class="claim-btn claim" style="padding: 12px 40px; font-size: 14px;" onclick="showScreen('theirs-list-detail')">
+                                        Claim This Gift
+                                    </button>
+                                    <p style="color: var(--text-secondary); font-size: 11px; margin-top: 16px;">
+                                        You can unclaim later if plans change.
+                                    </p>
+                                    <button style="margin-top: 12px; background: none; border: none; color: var(--text-secondary); font-size: 13px; cursor: pointer;" onclick="showScreen('theirs-list-detail')">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- NEW LIST (Paid Feature) -->
+                        <div id="screen-new-list" class="screen-view">
+                            <div class="app-header">
+                                <div class="header-top">
+                                    <div class="app-name">Sherry's<br>Gift List</div>
+                                    <div class="header-buttons">
+                                        <button class="header-btn">🔍</button>
+                                        <button class="header-btn">📤</button>
+                                        <button class="header-btn">🗑</button>
+                                        <button class="header-btn" onclick="showTab('mine')">+</button>
+                                    </div>
+                                </div>
+                                <div class="header-subtitle">2 wishlists</div>
+                            </div>
+                            <div class="tab-segment-bar">
+                                <button class="tab-segment active" onclick="showTab('mine')">Mine</button>
+                                <button class="tab-segment" onclick="showTab('items')">Items</button>
+                                <button class="tab-segment" onclick="showTab('theirs')">Theirs</button>
+                            </div>
+                            <div class="content" style="padding: 15px;">
+                                <div style="background: white; border-radius: 12px; padding: 15px;">
+                                    <label style="font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px;">List Name</label>
+                                    <input type="text" placeholder="e.g., Birthday 2025" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px;" readonly>
+
+                                    <label style="font-size: 12px; color: var(--text-secondary); display: block; margin-top: 15px; margin-bottom: 4px;">Notes (optional)</label>
+                                    <textarea placeholder="Add any notes..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; height: 80px; resize: none;" readonly></textarea>
+                                </div>
+
+                                <div style="background: var(--accent-orange-bg); border-radius: 12px; padding: 15px; margin-top: 15px; display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-size: 24px;">✨</span>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary);">Premium Feature</div>
+                                        <div style="font-size: 11px; color: var(--text-secondary);">Creating lists requires a one-time purchase</div>
+                                    </div>
+                                    <button style="background: var(--accent-orange); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600;">Unlock</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-indicator" id="screen-indicator">Mine Tab (Owner View)</div>
+                <div class="role-indicator" id="role-indicator">You see your lists - aggregate stats only</div>
+            </div>
+
+            <div class="instructions">
+                <h3>Interactive Demo</h3>
+                <ul>
+                    <li><strong>Mine</strong> - Your wishlists (owner view)</li>
+                    <li><strong>Items</strong> - All items across lists</li>
+                    <li><strong>Theirs</strong> - Lists shared with you (claimer view)</li>
+                </ul>
+
+                <h3 style="margin-top: 20px;">Navigation Pattern</h3>
+                <ul>
+                    <li>Click a list to drill down to items</li>
+                    <li>Header + tabs <strong>stay visible</strong> in detail</li>
+                    <li>Tap the <strong>active tab</strong> again to go back</li>
+                    <li>(No back button - consistent with Packing List)</li>
+                </ul>
+
+                <h3 style="margin-top: 20px;">Asymmetric Visibility</h3>
+                <ul>
+                    <li><strong>Owner sees:</strong> Aggregate progress ("3 claimed, 2 purchased")</li>
+                    <li><strong>Owner does NOT see:</strong> Which items are claimed or by whom</li>
+                    <li><strong>Claimer sees:</strong> Full details (who claimed what)</li>
+                </ul>
+
+                <h3 style="margin-top: 20px;">Color Palette (from KISSColors)</h3>
+                <ul>
+                    <li><span class="color-swatch swatch-purple"></span>Royal Purple #7B1FA2 (primary)</li>
+                    <li><span class="color-swatch swatch-green"></span>Green #4CAF50 = Available</li>
+                    <li><span class="color-swatch swatch-blue"></span>Blue #1976D2 = Claimed</li>
+                    <li><span class="color-swatch swatch-teal"></span>Teal #009688 = Purchased</li>
+                    <li><span class="color-swatch swatch-orange"></span>Orange #FFA726 = Accent</li>
+                </ul>
+
+                <h3 style="margin-top: 20px;">Feature Gating</h3>
+                <ul>
+                    <li><strong>Free:</strong> Accept shares, claim items, mark purchased</li>
+                    <li><strong>Paid:</strong> Create lists, share lists<span class="paywall-badge">PRO</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const screenInfo = {
+            'screen-mine': { name: 'Mine Tab (Owner View)', role: 'You see your lists - aggregate stats only' },
+            'screen-items': { name: 'Items Tab', role: 'All items grouped by list' },
+            'screen-theirs': { name: 'Theirs Tab (Claimer View)', role: 'Lists others shared with you' },
+            'screen-mine-list-detail': { name: 'My List Detail', role: 'Owner view - NO claim details shown' },
+            'screen-mine-list-detail-christmas': { name: 'My List Detail', role: 'Owner view - list not shared yet' },
+            'screen-theirs-list-detail': { name: 'Shared List Detail', role: 'Claimer view - FULL claim details visible' },
+            'screen-theirs-list-detail-sarah': { name: 'Shared List Detail', role: 'Claimer view - see who claimed what' },
+            'screen-claim-item': { name: 'Claim Confirmation', role: 'Reserve this item for yourself' },
+            'screen-new-list': { name: 'New List (Paid)', role: 'Creating lists requires purchase' }
+        };
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen-view').forEach(s => s.classList.remove('active'));
+            const screen = document.getElementById('screen-' + screenId);
+            if (screen) {
+                screen.classList.add('active');
+                const info = screenInfo['screen-' + screenId] || { name: screenId, role: '' };
+                document.getElementById('screen-indicator').textContent = info.name;
+                document.getElementById('role-indicator').textContent = info.role;
+            }
+        }
+
+        function showTab(tab) {
+            showScreen(tab);
+        }
+    </script>
+</body>
+</html>

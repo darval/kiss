@@ -12,6 +12,7 @@
     /* App primary colors */
     --color-shopping: #2E7D32;
     --color-packing: #1976D2;
+    --color-gift: #7B1FA2;
 
     /* Spacing */
     --space-xs: 4px;
@@ -171,6 +172,10 @@ a:hover {
     color: var(--color-packing);
 }
 
+.app-card--gift .app-card-name {
+    color: var(--color-gift);
+}
+
 .app-card-tagline {
     font-size: 1rem;
     opacity: 0.85;
@@ -196,6 +201,11 @@ a:hover {
 
 .app-card-badge--coming {
     background-color: var(--color-packing);
+    color: white;
+}
+
+.app-card-badge--coming-gift {
+    background-color: var(--color-gift);
     color: white;
 }
 
@@ -279,6 +289,10 @@ a:hover {
 
 .app-name--packing {
     color: var(--color-packing);
+}
+
+.app-name--gift {
+    color: var(--color-gift);
 }
 
 .app-tagline {
@@ -369,6 +383,10 @@ a:hover {
 
 .feature-icon--packing {
     background-color: var(--color-packing);
+}
+
+.feature-icon--gift {
+    background-color: var(--color-gift);
 }
 
 .feature-title {
@@ -564,6 +582,18 @@ a:hover {
 
     .app-card--packing .app-card-name {
         color: #42A5F5;
+    }
+
+    .app-card--gift .app-card-name {
+        color: #CE93D8;
+    }
+
+    .app-name--gift {
+        color: #CE93D8;
+    }
+
+    .feature-icon--gift {
+        background-color: #BA68C8;
     }
 
     .feature-title,
